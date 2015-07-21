@@ -49,6 +49,12 @@ app.factory('Auth', function ($http, $state, $rootScope) {
 				$rootScope.currentUser = user;
 				return user;
 			});
+		},
+		callback: function (){
+			return $http.get('auth/google/')
+			.then(function (response){
+				return response.data;
+			})
 		}
 	}
 });

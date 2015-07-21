@@ -2,6 +2,7 @@
 
 var app = require('express')();
 var path = require('path');
+//var passport = require('passport');
 
 app.use(require('./logging.middleware'));
 

@@ -3,9 +3,13 @@
 var router = require('express').Router();
 var User = require('../api/users/user.model');
 
+router.use('/google', require('./google.oauth'));
+
 router.get('/logout', function (req, res, next) {
-	req.session.userId = null;
-	res.status(200).end();
+	//req.session.userId = null;
+	req.logout(function (){
+		res.status(200).end();
+	})
 });
 
 router.post('/login', function (req, res, next) {
@@ -15,8 +19,10 @@ router.post('/login', function (req, res, next) {
 	User.findByEmail(req.body.email).exec()
 	.then(function (user) {
 		if (user && user.authenticate(req.body.password)) {
-			req.session.userId = user._id;
-			res.json(user);
+			// req.session.userId = user._id;
+			req.login(user, function(){
+				res.json(user);
+			}); //req.logn is from passport.initialize() and triggers passport.serializeUser callback function
 			return;
 		}
 		// did not find user
@@ -32,10 +38,13 @@ router.post('/signup', function (req, res, next) {
 	delete req.body.isAdmin;
 	User.create(req.body)
 	.then(function (user) {
-		req.session.userId = user._id;
-		res.status(201).json(user);
+		//req.session.userId = user._id;
+		req.login(user, function(){
+			res.status(201).json(user);
+		})
 	})
 	.then(null, next);
 });
+
 
 module.exports = router;

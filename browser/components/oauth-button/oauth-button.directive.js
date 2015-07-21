@@ -1,6 +1,6 @@
 'use strict';
 
-app.directive('oauthButton', function () {
+app.directive('oauthButton', function (Auth) {
 	return {
 		scope: {
 			providerName: '@'

@@ -28,11 +28,12 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/me', function (req, res, next) {
-	User.findById(req.session.userId).exec()
+	res.json(req.user); //from passport
+/*	User.findById(req.session.userId).exec()
 	.then(function (user) {
 		res.json(user);
 	})
-	.then(null, next);
+	.then(null, next);*/
 });
 
 router.get('/:id', function (req, res, next) {
